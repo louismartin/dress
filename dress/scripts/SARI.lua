@@ -2,7 +2,7 @@
 include '../utils/shortcut.lua'
 -- require 'shortcut'
 
-local py = require('fb.python')
+--local py = require('fb.python')
 local pySari = py.import('sari.SARI')
 
 local Sari = torch.class('SARI')
@@ -49,18 +49,18 @@ function Sari.SARIfile(src_file, trg_file, ref_file)
 	return score / cnt
 end
 
-function Sari.getDynBatch(x, x_mask, y, y_pred, reward, reward_mask, 
+function Sari.getDynBatch(x, x_mask, y, y_pred, reward, reward_mask,
     src_vocab, dst_vocab, sari_rev_weight)
-  
+
   if sari_rev_weight == nil then
     sari_rev_weight = 0.5
   end
-  
+
   reward:zero()
   reward_mask:zero()
-  
+
   local ori_sents = { src = {}, dst = {}, ref = {} }
-  
+
   local function get_word(vocab, wid)
     return vocab.idx2word[wid]
   end
@@ -104,7 +104,7 @@ function Sari.getDynBatch(x, x_mask, y, y_pred, reward, reward_mask,
     local src_sent = table.concat(src, ' ')
     local trg_sent = table.concat(dst_pred, ' ')
     local ref_sent = table.concat(dst, ' ')
-    
+
     local r = 0
     if #dst ~= 0 then
       --[[
@@ -115,24 +115,24 @@ function Sari.getDynBatch(x, x_mask, y, y_pred, reward, reward_mask,
       local sari_reverse = Sari.SARIsent_single(src_sent, ref_sent, trg_sent)
       -- r = (sari + sari_reverse) / 2
       r = (1 - sari_rev_weight) * sari + sari_rev_weight * sari_reverse
-      
+
       if r == 0 then r = 1e-5 end
       assert(last_pos ~= -1, 'last_pos must be valid!')
       reward[{ last_pos, i }] = r
-      
+
       if #dst_pred == 0 then
         xprintln('src = \"%s\"', src_sent)
         xprintln('dst = \"%s\"', trg_sent)
         xprintln('ref = \"%s\"', ref_sent)
         xprintln('last pos = %d', last_pos)
       end
-      
+
       table.insert(ori_sents.src, src_sent)
       table.insert(ori_sents.dst, trg_sent)
       table.insert(ori_sents.ref, ref_sent)
     end
   end
-  
+
   return reward, reward_mask, ori_sents
 end
 
@@ -153,5 +153,3 @@ if not package.loaded['SARI'] then
 else
 	print '[SARI] loaded as package!'
 end
-
-
