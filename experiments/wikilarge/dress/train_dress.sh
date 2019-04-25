@@ -9,20 +9,22 @@ if [ $ID -eq -1 ]; then
     exit
 fi
 
-. ~/conf/cudnn.sh
+#. ~/conf/cudnn.sh
 
-codedir=/afs/inf.ed.ac.uk/group/project/img2txt/rewriting_model/dress/dress
+codedir=~/dev/tp/dress/dress
 curdir=`pwd` 
 lr=0.01
 label=.sym-sari1.lm0.5.sim0.25.rev0.9.lr0.01.rf2
 model_dir=$curdir/model_$lr$label
 log=$curdir/log_$lr$label.txt
 validout=$curdir/valid.out$label
-testout=$curdir/test.out$label
 
-train=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.train
-valid=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.valid
-test=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.test
+#train=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.train
+#valid=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.valid
+#test=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.test
+train=~/ts/data/processed/wikilarge/wikilarge.train
+valid=~/ts/data/processed/wikilarge/wikilarge.valid
+test=~/ts/data/processed/wikilarge/wikilarge.test
 
 wembed=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/glove.840B.300d.wiki.full.aner.t7
 
@@ -55,7 +57,6 @@ CUDA_VISIBLE_DEVICES=$ID th train_rf.lua --learnZ --useGPU \
     --batchSize 16 \
     --validBatchSize 16 \
     --maxEpoch 100 \
-    --wordEmbedding $wembed \
     --embedOption fineTune \
     --fineTuneFactor 0 \
     --encdecPath $submodel \

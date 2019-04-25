@@ -9,9 +9,9 @@ if [ $ID -eq -1 ]; then
 fi
 # ./gpu_lock.py
 
-. ~/conf/cudnn.sh
 
 codedir=/afs/inf.ed.ac.uk/group/project/img2txt/rewriting_model/dress-release/encdeca
+codedir=/private/home/louismartin/tp/dress/encdeca
 curdir=`pwd`
 lr=0.001
 label=.256.2L.we.ft0
@@ -20,10 +20,12 @@ log=$curdir/log_$lr$label.txt
 validout=$curdir/valid.out$label
 testout=$curdir/test.out$label
 
-train=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.train
-valid=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.valid
-test=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.test
-
+#train=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.train
+#valid=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.valid
+#test=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/wiki.full.aner.test
+train=~/ts/data/processed/wikilarge/wikilarge.train
+valid=~/ts/data/processed/wikilarge/wikilarge.valid
+test=~/ts/data/processed/wikilarge/wikilarge.test
 
 wembed=/afs/inf.ed.ac.uk/group/project/img2txt/encdec/dataset/wiki-full/norm_all/glove.840B.300d.wiki.full.aner.t7
 
@@ -49,7 +51,6 @@ CUDA_VISIBLE_DEVICES=$ID th train.lua --learnZ --useGPU \
     --batchSize 32 \
     --validBatchSize 32 \
     --maxEpoch 30 \
-    --wordEmbedding $wembed \
     --embedOption fineTune \
     --fineTuneFactor 0 \
     | tee $log

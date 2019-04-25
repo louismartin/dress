@@ -1,14 +1,13 @@
 
-sysdir=dress/all-system-output/WikiLarge/test/lower
-input=/disk/scratch/Dataset/simplification/data/turkcorpus/test.8turkers.tok.norm
-ref=/disk/scratch/Dataset/simplification/data/turkcorpus/test.8turkers.tok.turk
+sysdir=/private/home/louismartin/dev/ext/dress/all-system-output/WikiLarge/test/lower
+input=/private/home/louismartin/dev/ext/simplification/data/turkcorpus/test.8turkers.tok.norm
+ref=/private/home/louismartin/dev/ext/simplification/data/turkcorpus/test.8turkers.tok.turk
 
 for sysout in `ls $sysdir`
 do
-	./star $sysdir/$sysout $ref $input
 	echo "====================="
 	echo $sysout
-	echo "\n\n\n"
+	./star $sysdir/$sysout $ref $input | grep "STAR"
 done
 
 

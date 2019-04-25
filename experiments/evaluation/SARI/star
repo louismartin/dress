@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+JOSHUA=/private/home/louismartin/dev/ext/ppdb-simplification-release-joshua5.0/joshua
 
 if [[ -z $3 ]]; then
   echo "Usage: star output reference src"
